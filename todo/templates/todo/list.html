@@ -10,7 +10,7 @@
 
   </head>
   <body>
-    <div class="container my-5">
+    <div class="container my-5" id="app">
         <div class="row">
             <div class="col-lg-7 border shadow p4 mx-auto">
                 <h3 class="d-inline-block ">Todo App</h3>
@@ -34,15 +34,12 @@
         </tr>
         </thead>
         <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
+          <tr v-for="todo in todo_list">
+            <td>${todo.title} </td>
+            <td>${todo.note}</td>
+            <td>${todo.done}</td>
           </tr>
-          <tr>
 
-          </tr>
         </tbody>
         </table>
     </div>
@@ -84,5 +81,33 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-  </body>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js "></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.1/axios.min.js" integrity="sha512-m9S8W3a9hhBHPFAbEIaG7J9P92dzcAWwM42VvJp5n1/M599ldK6Z2st2SfJGsX0QR4LfCVr681vyU5vW8d218w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script type="text/javascript">
+
+        axios.defaults.csrfCookieName = 'csrftoken'
+        axios.defaults.xcsrfHeaderName = 'X-CSRFTOKEN'
+        var app = new Vue({
+            el:'#app',
+            delimiters:['${' , '}'],
+            data:{
+                todo_list:[],
+
+            },
+            mounted(){
+                this.get_todo();
+            },
+            methods :{
+                get_todo:function(){
+                axios.get('/todo/api/').then((response)=>{
+                    this.todo_list = response.data
+                })
+                },
+            },
+        })
+    </script>
+
+
+</body>
 </html>
