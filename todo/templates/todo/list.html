@@ -1,113 +1,184 @@
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-  </head>
-  <body>
+</head>
+
+<body>
     <div class="container my-5" id="app">
         <div class="row">
-            <div class="col-lg-7 border shadow p4 mx-auto">
+            <div class="col-lg-8 border shadow p4 mx-auto">
                 <h3 class="d-inline-block ">Todo App</h3>
-                <div class="d-inline-block "><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                    Add Todo
-                  </button>
-                
+                <div class="d-inline-block " style="margin-left: 50%;"><button type="button" class="btn btn-primary"
+                        data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                        Add Todo
+                    </button>
+
                 </div>
             </div>
         </div>
-    </div>
-<div class="row mt-5">
-    <div class="col-lg-6 mx-auto p-4 shadow">
-        
-        <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">ToDo</th>
-            <th scope="col">Notes</th>
-            <th scope="col">Action</th>
-        </tr>
-        </thead>
-        <tbody>
-          <tr v-for="todo in todo_list">
-            <td>${todo.title} </td>
-            <td>${todo.note}</td>
-            <td>${todo.done}</td>
-          </tr>
 
-        </tbody>
-        </table>
-    </div>
 
-</div>
-<!-- Modal -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-    <div class="modal-content">
-        <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Create new Todo</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <form>
-                <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Todo</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+        <div class="row mt-5">
+            <div class="col-lg-8 mx-auto p-4 shadow">
 
-                <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">description</label>
-                <textarea type="text" class="form-control" id="exampleInputPassword1"></textarea>
-                </div>
-                <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">Done</label>
-                </div>
-                
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Add</button>
-                </div>
-                </form>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">ToDo</th>
+                            <th scope="col">Notes</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="todo in todo_list">
+                            <td>${todo.title} </td>
+                            <td>${todo.note}</td>
+
+                            <td>
+                                <div>
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#EditModal">
+                                        Edit
+                                    </button>
+                                    <button type="button" class="btn btn-danger" v-on:click="deleteTodo(todo.id)">
+                                        Delete
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
         </div>
 
-    </div>
-    </div>
-</div>
+        <div class="modal fade" id="staticBackdrop" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Create new Todo</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form v-on:submit.prevent="addTodo()">
+                            <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">Todo</label>
+                                <input type="text" class="form-control" v-model="new_todo.title"
+                                    id="exampleInputEmail1" aria-describedby="emailHelp">
 
+                                <div class="mb-3">
+                                    <label for="exampleInputPassword1" class="form-label">description</label>
+                                    <textarea type="text" class="form-control" v-model="new_todo.note"
+                                        id="exampleInputPassword1"></textarea>
+                                </div>
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" v-model="new_todo.done"
+                                        id="exampleCheck1">
+                                    <label class="form-check-label" for="exampleCheck1">Done</label>
+                                </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Add</button>
+                                </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="EditModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Create new Todo</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">Todo</label>
+                                <input type="email" class="form-control" id="exampleInputEmail1"
+                                    aria-describedby="emailHelp">
+
+                                <div class="mb-3">
+                                    <label for="exampleInputPassword1" class="form-label">description</label>
+                                    <textarea type="text" class="form-control" id="exampleInputPassword1"></textarea>
+                                </div>
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                    <label class="form-check-label" for="exampleCheck1">Done</label>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary">Add</button>
+                                </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js "></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.1/axios.min.js" integrity="sha512-m9S8W3a9hhBHPFAbEIaG7J9P92dzcAWwM42VvJp5n1/M599ldK6Z2st2SfJGsX0QR4LfCVr681vyU5vW8d218w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.1/axios.min.js"
+        integrity="sha512-m9S8W3a9hhBHPFAbEIaG7J9P92dzcAWwM42VvJp5n1/M599ldK6Z2st2SfJGsX0QR4LfCVr681vyU5vW8d218w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script type="text/javascript">
-
-        axios.defaults.csrfCookieName = 'csrftoken'
-        axios.defaults.xcsrfHeaderName = 'X-CSRFTOKEN'
+        axios.defaults.xsrfCookieName = 'csrftoken'
+        axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN'
         var app = new Vue({
-            el:'#app',
-            delimiters:['${' , '}'],
-            data:{
-                todo_list:[],
+            el: '#app',
+            delimiters: ['${', '}'],
+            data: {
+                todo_list: [],
+                new_todo: {
+                    title: null,
+                    note: null,
+                    done: null,
+                }
 
             },
-            mounted(){
+            mounted() {
                 this.get_todo();
             },
-            methods :{
-                get_todo:function(){
-                axios.get('/todo/api/').then((response)=>{
-                    this.todo_list = response.data
-                })
+            methods: {
+                get_todo: function () {
+                    axios.get('/todo/api/').then((response) => {
+                        this.todo_list = response.data
+                    })
                 },
+                addTodo: function () {
+                    axios.post('/todo/api/', this.new_todo)
+                        .then((response) => {
+                            this.get_todo()
+                        })
+                },
+
             },
         })
     </script>
 
 
 </body>
+
 </html>
