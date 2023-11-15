@@ -173,7 +173,11 @@
                             this.get_todo()
                         })
                 },
-
+                deleteTodo:function(id){
+                    axios.delete("/todo/api/" + id).then((response)=>
+                    {this.get_todo()
+                    })
+                },
             },
         })
     </script>
