@@ -142,6 +142,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.1/axios.min.js"
         integrity="sha512-m9S8W3a9hhBHPFAbEIaG7J9P92dzcAWwM42VvJp5n1/M599ldK6Z2st2SfJGsX0QR4LfCVr681vyU5vW8d218w=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
 
     <script type="text/javascript">
         axios.defaults.xsrfCookieName = 'csrftoken'
@@ -171,6 +173,14 @@
                 addTodo: function () {
                     axios.post('/todo/api/', this.new_todo)
                         .then((response) => {
+                            $('#staticBackdrop').modal('hide');
+                            this.new_todo = {
+                                title: '',
+                                note: '',
+                                done: false,
+                            }
+
+
                             this.get_todo()
                         })
                 },
@@ -190,6 +200,13 @@
                 updateToDo: function () {
                     axios.put(`/todo/api/${this.current_todo.id}`,this.current_todo )
                     .then((response) => {
+                        $('#editModal').modal('hide');
+                        this.current_todo = {
+                                title: '',
+                                note: '',
+                                done: false,
+                            }
+                        this.current_todo = {}
                         this.get_todo()
                     })
                 },
