@@ -106,10 +106,10 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form>
+                        <form v-on:submit.prevent = "updateToDo()">
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Todo</label>
-                                <input type="email" class="form-control" v-model = "current_todo.title" id="exampleInputEmail1"
+                                <input type="text" class="form-control" v-model = "current_todo.title" id="exampleInputEmail1"
                                     aria-describedby="emailHelp">
 
                                 <div class="mb-3">
@@ -187,8 +187,11 @@
                     })
                 },
 
-                updateStatus: function () {
-
+                updateToDo: function () {
+                    axios.put(`/todo/api/${this.current_todo.id}`,this.current_todo )
+                    .then((response) => {
+                        this.get_todo()
+                    })
                 },
             },
         })
