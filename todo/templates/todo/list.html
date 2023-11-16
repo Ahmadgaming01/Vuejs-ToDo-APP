@@ -45,8 +45,8 @@
 
                             <td>
                                 <div>
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#EditModal">
+                                    <button type="button" class="btn btn-primary" v-on:click = "getTodoItem(todo.id)" data-bs-toggle="modal"
+                                        data-bs-target="#editModal">
                                         Edit
                                     </button>
                                     <button type="button" class="btn btn-danger" v-on:click="deleteTodo(todo.id)">
@@ -98,7 +98,7 @@
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="EditModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="editModal" v-on:click = "get_todo(todo.id)" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -109,15 +109,15 @@
                         <form>
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Todo</label>
-                                <input type="email" class="form-control" id="exampleInputEmail1"
+                                <input type="email" class="form-control" v-model = "current_todo.title" id="exampleInputEmail1"
                                     aria-describedby="emailHelp">
 
                                 <div class="mb-3">
                                     <label for="exampleInputPassword1" class="form-label">description</label>
-                                    <textarea type="text" class="form-control" id="exampleInputPassword1"></textarea>
+                                    <textarea type="text" class="form-control" v-model = "current_todo.note" id="exampleInputPassword1"></textarea>
                                 </div>
                                 <div class="mb-3 form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                    <input type="checkbox" class="form-check-input" v-model = "current_todo.done" id="exampleCheck1">
                                     <label class="form-check-label" for="exampleCheck1">Done</label>
                                 </div>
 
@@ -155,7 +155,8 @@
                     title: null,
                     note: null,
                     done: null,
-                }
+                },
+            current_todo:{},
 
             },
             mounted() {
@@ -177,6 +178,17 @@
                     axios.delete("/todo/api/" + id).then((response)=>
                     {this.get_todo()
                     })
+                },
+
+                getTodoItem:function(id){
+                    axios.get('/todo/api/'+ id)
+                    .then((response) =>{
+                        this.current_todo = response.data
+                    })
+                },
+
+                updateStatus: function () {
+
                 },
             },
         })
